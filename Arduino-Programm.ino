@@ -41,7 +41,7 @@ void loop() {
   float temp = dht.readTemperature();
   float hum  = dht.readHumidity();
   int lichtWert = analogRead(lichtPin);
-  bool kippt = digitalRead(kippsensorPin);
+  bool kippt = !digitalRead(kippsensorPin);
   bool tasterGedrueckt = digitalRead(tasterPin) == LOW;
 
   // LCD-Ausgabe
