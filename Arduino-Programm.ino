@@ -49,7 +49,7 @@ void loop() {
   lcd.print("T:"); lcd.print(temp, 1); lcd.print("C H:"); lcd.print(hum, 0); lcd.print("%");
 
   lcd.setCursor(0, 1);
-  lcd.print("L:"); lcd.print(lichtWert); lcd.print(" K:"); lcd.print(kippt ? "ok" : "! ");
+  lcd.print("L:"); lcd.print(lichtWert); lcd.print(" K:"); lcd.print(kippt ? "i.O." : "! ");
 
   // LED-Statuslogik
   bool kritisch = false;
