@@ -3,7 +3,7 @@
 #include <DHT.h>
 
 // LCD Pins: RS, E, D4, D5, D6, D7
-LiquidCrystal lcd(8, 9, 10, 11, 12, 13);
+LiquidCrystal lcd(9, 8, 5, 4, 3, 2);
 
 // DHT-Sensor
 #define DHTPIN A0
@@ -12,12 +12,14 @@ DHT dht(DHTPIN, DHTTYPE);
 
 // Pins definieren
 const int lichtPin = A1;
-const int kippsensorPin = 6;
-const int tasterPin = 4;
-const int piezoPin = 5;
+const int tasterPin = 12;
+const int piezoPin = 13;
 const int ledGruen = A3;
 const int ledGelb  = A4;
 const int ledRot   = A5;
+
+unsigned long startZeit;
+const unsigned long transportDauerMin = 360; // 6h = 360min
 
 void setup() {
   // LCD initialisieren
@@ -26,7 +28,6 @@ void setup() {
 
   // Sensoren und Aktoren konfigurieren
   dht.begin();
-  pinMode(kippsensorPin, INPUT);
   pinMode(tasterPin, INPUT_PULLUP);
   pinMode(piezoPin, OUTPUT);
   pinMode(ledGruen, OUTPUT);
@@ -34,22 +35,29 @@ void setup() {
   pinMode(ledRot, OUTPUT);
   delay(2000);
   lcd.clear();
+
+  startZeit = millis();
+
 }
 
-void loop() {
+void loop() {  
+
   // Sensorwerte lesen
   float temp = dht.readTemperature();
   float hum  = dht.readHumidity();
   int lichtWert = analogRead(lichtPin);
-  bool kippt = !digitalRead(kippsensorPin);
   bool tasterGedrueckt = digitalRead(tasterPin) == LOW;
+
+  // Restzeit berechnen
+  unsigned long vergangeneMillis = millis() - startZeit;
+  unsigned long vergangeneMinuten = vergangeneMillis / 60000;
+  long restMinuten = transportDauerMin - vergangeneMinuten;
 
   // LCD-Ausgabe
   lcd.setCursor(0, 0);
   lcd.print("T:"); lcd.print(temp, 1); lcd.print("C H:"); lcd.print(hum, 0); lcd.print("%");
-
   lcd.setCursor(0, 1);
-  lcd.print("L:"); lcd.print(lichtWert); lcd.print(" K:"); lcd.print(kippt ? "i.O." : "! ");
+  lcd.print("L:"); lcd.print(lichtWert); lcd.print(" Z:"); lcd.print(restMinuten > 0 ? String(restMinuten) + "min" : "Ende ");
 
   // LED-Statuslogik
   bool kritisch = false;
@@ -69,7 +77,7 @@ void loop() {
     grenzwert = true;
   }
 
-  // Lichtbewertung (einfaches Beispiel)
+  // Lichtbewertung 
   if (lichtWert > 800) {
     kritisch = true;
   } else if (lichtWert > 600) {
@@ -90,4 +98,3 @@ void loop() {
 
   delay(1000);
 }
-
