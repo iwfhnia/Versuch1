@@ -6,12 +6,12 @@
 LiquidCrystal lcd(8, 9, 10, 11, 12, 13);
 
 // DHT-Sensor
-#define DHTPIN 7
+#define DHTPIN A0
 #define DHTTYPE DHT11
 DHT dht(DHTPIN, DHTTYPE);
 
 // Pins definieren
-const int lichtPin = A0;
+const int lichtPin = A1;
 const int kippsensorPin = 6;
 const int tasterPin = 4;
 const int piezoPin = 5;
