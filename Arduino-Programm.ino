@@ -5,7 +5,7 @@
 // LCD Pins: RS, E, D4, D5, D6, D7
 LiquidCrystal lcd(9, 8, 5, 4, 3, 2);
 
-// DHT-Sensor
+// DHT-Sensor 
 #define DHTPIN      A0
 #define DHTTYPE     DHT11
 DHT dht(DHTPIN, DHTTYPE);
@@ -18,7 +18,7 @@ const int ledGruen    = A3;
 const int ledGelb     = A4;
 const int ledRot      = A5;
 
-// Zeitsteuerung in Minuten
+// Zeitsteuerung (in Minuten)
 unsigned long startZeitMin;
 const unsigned long transportDauerMin = 360;   // 6 Stunden = 360 Minuten
 const unsigned long messIntervallMin  = 10;    // 10 Minuten
@@ -72,7 +72,6 @@ void loop() {
   // LCD-Ausgabe
   lcd.setCursor(0, 0);
   lcd.print("T:" + String(temp,1) + "oC "); lcd.print("H:" + String(hum,0) + "%");
-
   lcd.setCursor(0, 1);
   lcd.print("L:" + String(lichtWert) + "lx");lcd.print(" Z:" + (restMinuten > 0 ? String(restMinuten) + "min" : "Ende "));
 
